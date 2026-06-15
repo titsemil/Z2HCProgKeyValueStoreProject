@@ -89,8 +89,9 @@ int kv_put(kv_t *db, char *key, char *value)
 				return 0;
 			}
 
-		//land in a slot that is "empty"
-		//meaning NULL or TOMBSTONE
+		/* land in a slot that is "empty"
+		 * meaning NULL or TOMBSTONE
+		 */
 
 		if (!entry->key || entry->key == (void*)TOMBSTONE)
 		{
@@ -110,6 +111,48 @@ int kv_put(kv_t *db, char *key, char *value)
 	}
 	//the database is occupied
 	return -2;
+}
+
+/* Function: kv_delete
+ * parameters:
+ *		- db:		a pointer to the database
+ *		- key:		a pointer to the key value
+ * returns: the index of the deletion
+ * -1 if not found
+ */
+
+int kv_delete(kv_t *db, char *key)
+{
+	if (!db || !key) return -1;
+
+	size_t idx = hash(key, db->capacity);
+
+	for (int i = 0; i < db->capacity -1; i++)
+	{
+		size_t real_idx = (idx + i) % db->capacity;
+
+		kv_entry_t *entry = &db->entries[real_idx];
+
+		if (entry->key == NULL)
+		{
+			return -1;
+		}
+
+		if (entry->key &&
+			entry->key != (void*)TOMBSTONE &&
+			!strcmp(entry->key, key))
+		{
+			free(entry->key);
+			free(entry->value);
+			db->count--;
+			entry->key = (void*)TOMBSTONE;
+			entry->value = NULL;
+
+			return real_idx;
+		}
+	}
+
+	return -1;
 }
 
 kv_t *kv_init(size_t capacity)
