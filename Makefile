@@ -23,7 +23,11 @@ _print:
 	@echo $(SRC)
 	@echo $(OBJ)
 
-.PHONY: clean
+.PHONY: clean debug
 clean:
 	rm -f $(BIN_DIR)/*
 	rm -f $(OBJ_DIR)/*.o
+
+debug:
+	@echo "Me debug"
+	gcc -g -o $(BIN_DIR)/debug -I$(INC_DIR) $(SRC_DIR)/*.c $(FLAGS)
