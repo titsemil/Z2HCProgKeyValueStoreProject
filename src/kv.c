@@ -2,9 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define TOMBSTONE 0x1
+//RFD#define TOMBSTONE 0x1
 
-size_t hash(char *val, int capacity)
+size_t hash(const char *val, int capacity)
 {
 	size_t hash = 0x13371337deadbeef;
 
@@ -29,7 +29,8 @@ size_t hash(char *val, int capacity)
  * or 'NULL' if not found
  */
 
-char *kv_get(kv_t *db, char *key)
+//RFDchar *kv_get(kv_t *db, char *key)
+char *kv_get(kv_t *db, const char *key)
 {
 	if (!db || !key) return NULL;
 
@@ -63,6 +64,7 @@ char *kv_get(kv_t *db, char *key)
  * returns: 0 on success, -1 on failure
  */
 
+//RFDint kv_free(kv_t *db)
 int kv_free(kv_t *db)
 {
 	if (!db) return -1;
@@ -98,7 +100,8 @@ int kv_free(kv_t *db)
  * value error returns -1, on "not found" return -2
  */
 
-int kv_put(kv_t *db, char *key, char *value)
+//RFDint kv_put(kv_t *db, char *key, char *value)
+int kv_put(kv_t *db, const char *key, const char *value)
 {
 	if (!db || !key || !value) return -1;
 
@@ -154,7 +157,8 @@ int kv_put(kv_t *db, char *key, char *value)
  * -1 if not found
  */
 
-int kv_delete(kv_t *db, char *key)
+//RFDint kv_delete(kv_t *db, char *key)
+int kv_delete(kv_t *db, const char *key)
 {
 	if (!db || !key) return -1;
 
